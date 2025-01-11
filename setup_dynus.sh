@@ -135,6 +135,10 @@ source /opt/ros/humble/setup.sh && ./build.sh humble
 cd /home/swarm/code/dlio_ws
 colcon build
 
+#mavros interface
+cd /home/swarm/code/mavros_ws
+colcon build 
+
 #Dynus 
 cd /home/swarm/code/dynus_ws
 source /opt/ros/humble/setup.sh 
