@@ -13,8 +13,8 @@ pcm.!default { \
                   type plug \
                   slave.pcm "null" \
             }
-
-8. Reboot for dialout privileges to take effect
+8. Add vehicle name to ~/.bashrc. E.g. for PX01: echo ' export VEH_NAME="PX01" ' >> ~/.bashrc
+9. Reboot for dialout privileges to take effect
 
 TODO: Add d455 installation 
 

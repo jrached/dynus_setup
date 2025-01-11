@@ -171,7 +171,8 @@ source ~/.bashrc
 
 # Install mavros 
 cd /home/swarm
-sudo apt install -y ros-humble-mavros
+sudo apt install -y ros-humble-mavros 
+sudo apt install -y ros-humble-mavros-extras 
 wget https://raw.githubusercontent.com/mavlink/mavros/ros2/mavros/scripts/install_geographiclib_datasets.sh
 sudo chmod +x install_geographiclib_datasets.sh
 sudo ./install_geographiclib_datasets.sh
