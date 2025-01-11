@@ -7,7 +7,14 @@
 4. Go to gurobi and get an academic license 
 5. Get ip address using: ifconfig | grep inet. It should be on the 192.168.0.xxx network (raven)
 6. Set wired connection ip for lidar to 192.168.1.50 on ubuntu gui
-7. Reboot for dialout privileges to take effect
+7. Add the following line to the alsa.config file in /usr/share/alsa
+
+pcm.!default { \
+                  type plug \
+                  slave.pcm "null" \
+            }
+
+8. Reboot for dialout privileges to take effect
 
 TODO: Add d455 installation 
 

@@ -80,10 +80,14 @@ echo 'export PATH="${PATH}:${GUROBI_HOME}/bin" ' >> ~/.bashrc
 echo 'export LD_LIBRARY_PATH="${GUROBI_HOME}/lib" ' >> ~/.bashrc
 source ~/.bashrc 
 
+export GUROBI_HOME="/opt/gurobi1103/linux64" 
+export PATH="${PATH}:${GUROBI_HOME}/bin" 
+export LD_LIBRARY_PATH="${GUROBI_HOME}/lib" 
+
 # Dynus and dependencies ###############################################################################################
 mkdir -p /home/swarm/code/dynus_ws/src
 cd /home/swarm/code/dynus_ws/src
-yes "yes" | git clone git@github.com:kotakondo/dynus.git
+echo "yes" | git clone git@github.com:kotakondo/dynus.git
 cd /home/swarm/code/dynus_ws/src/dynus 
 git switch dev-non-uniform
 cd /home/swarm/code/dynus_ws/src
