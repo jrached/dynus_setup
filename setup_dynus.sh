@@ -150,6 +150,7 @@ colcon build
 echo >> ~/.bashrc
 echo 'export LD_LIBRARY_PATH="/home/swarm/code/livox_ws/install/livox_ros_driver2/lib:${LD_LIBRARY_PATH}" ' >> ~/.bashrc
 echo 'export LD_LIBRARY_PATH="/opt/ros/humble/lib:${LD_LIBRARY_PATH}" ' >> ~/.bashrc
+echo 'export LD_LIBRARY_PATH="/home/swarm/code/decomp_ws/install/decomp_ros_msgs/lib:${LD_LIBRARY_PATH}" ' >> ~/.bashrc
 
 # Useful aliases 
 echo 'alias sb="source ~/.bashrc"' >> ~/.bashrc
