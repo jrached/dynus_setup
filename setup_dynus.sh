@@ -168,3 +168,6 @@ wget https://raw.githubusercontent.com/mavlink/mavros/ros2/mavros/scripts/instal
 sudo chmod +x install_geographiclib_datasets.sh
 sudo ./install_geographiclib_datasets.sh
 rm install_geographiclib_datasets.sh
+
+# Add user to dialout group to use ttyACM port
+sudo usermod -aG dialout ${USER}
