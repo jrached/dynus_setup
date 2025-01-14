@@ -5,16 +5,17 @@
 2. Generate key with gen_ssh_key.sh file and add it to your github account
 3. Run setup_dynus.sh script 
 4. Go to gurobi and get an academic license 
-5. Get ip address using: ifconfig | grep inet. It should be on the 192.168.0.xxx network (raven)
+5. Get ip address using: ifconfig | grep inet. It should be on the 192.168.0.xxx network (raven). Save it somewhere
 6. Set wired connection ip for lidar to 192.168.1.50 on ubuntu gui
-7. Add the following line to the alsa.config file in /usr/share/alsa
+7. Modify the MID360 config file in livox_driver_ros2 to be 192.168.1.1xx where xx are last two digits of serial number
+8. Add the following line to the alsa.config file in /usr/share/alsa
 
 pcm.!default { \
                   type plug \
                   slave.pcm "null" \
             }
-8. Add vehicle name to ~/.bashrc. E.g. for PX01: echo ' export VEH_NAME="PX01" ' >> ~/.bashrc
-9. Reboot for dialout privileges to take effect
+9. Add vehicle name to ~/.bashrc. E.g. for PX01: echo ' export VEH_NAME="PX01" ' >> ~/.bashrc
+10. Reboot for dialout privileges to take effect
 
 TODO: Add d455 installation 
 
