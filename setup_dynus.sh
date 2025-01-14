@@ -181,3 +181,9 @@ rm install_geographiclib_datasets.sh
 
 # Add user to dialout group to use ttyACM port
 sudo usermod -aG dialout ${USER}
+
+touch ~/code/get_init_pose.sh 
+echo '#!/bin/bash' >> ~/code/get_init_pose.sh 
+echo >> ~/code/get_init_pose.sh 
+echo ' source ~/code/mavros_ws/install/setup.bash ' >> ~/code/get_init_pose.sh 
+echo ' eval $(ros2 run ros2_px4_stack get_init_pose) ' >> ~/code/get_init_pose.sh 
