@@ -112,7 +112,7 @@ cd /home/swarm/code
 git clone https://github.com/Livox-SDK/Livox-SDK2.git
 mkdir -p /home/swarm/code/dlio_ws/src
 cd /home/swarm/code/dlio_ws/src 
-git clone https://github.com/kotakondo/direct_lidar_inertial_odometry.git 
+git clone https://github.com/jrached/direct_lidar_inertial_odometry.git
 mkdir -p /home/swarm/code/mavros_ws/src
 cd /home/swarm/code/mavros_ws/src
 git clone https://github.com/jrached/ros2_px4_stack.git
