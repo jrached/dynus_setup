@@ -84,10 +84,14 @@ export GUROBI_HOME="/opt/gurobi1103/linux64"
 export PATH="${PATH}:${GUROBI_HOME}/bin" 
 export LD_LIBRARY_PATH="${GUROBI_HOME}/lib" 
 
+# Add github ssh key to known hosts
+echo >> ~/.ssh/known_hosts 
+ssh-keyscan github.com >> ~/.ssh/known_hosts
+
 # Dynus and dependencies ###############################################################################################
 mkdir -p /home/swarm/code/dynus_ws/src
 cd /home/swarm/code/dynus_ws/src
-echo "yes" | git clone git@github.com:kotakondo/dynus.git
+git clone git@github.com:kotakondo/dynus.git
 cd /home/swarm/code/dynus_ws/src/dynus 
 git switch dev-non-uniform
 cd /home/swarm/code/dynus_ws/src
@@ -187,3 +191,4 @@ echo '#!/bin/bash' >> ~/code/get_init_pose.sh
 echo >> ~/code/get_init_pose.sh 
 echo ' source ~/code/mavros_ws/install/setup.bash ' >> ~/code/get_init_pose.sh 
 echo ' eval $(ros2 run ros2_px4_stack get_init_pose) ' >> ~/code/get_init_pose.sh 
+sudo chmod +x /home/swarm/code/get_init_pose.sh 
