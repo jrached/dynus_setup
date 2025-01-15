@@ -16,6 +16,7 @@ pcm.!default { \
             }
 9. Add vehicle name to ~/.bashrc. E.g. for PX01: echo ' export VEH_NAME="PX01" ' >> ~/.bashrc
 10. Reboot for dialout privileges to take effect
+11. Modify hardware_blue_drone.yaml to use the right vehicle name as namespace and add source ~/code/get_init_pose.sh before running dynus_mavros.launch 
 
 TODO: Add d455 installation 
 
