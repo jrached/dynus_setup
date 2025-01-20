@@ -39,7 +39,8 @@ sudo apt install -y ros-humble-desktop
 sudo apt install -y ros-dev-tools 
 
 echo >> ~/.bashrc
-echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc 
+echo '# Source ros distro' >> ~/.bashrc
+echo 'source /opt/ros/humble/setup.bash' >> ~/.bashrc 
 
 export ROS_DISTRO=humble
 # Ros dependencies ##################################################################################################
@@ -88,92 +89,27 @@ export LD_LIBRARY_PATH="${GUROBI_HOME}/lib"
 echo >> ~/.ssh/known_hosts 
 ssh-keyscan github.com >> ~/.ssh/known_hosts
 
-# Dynus and dependencies ###############################################################################################
-mkdir -p /home/swarm/code/dynus_ws/src
-cd /home/swarm/code/dynus_ws/src
-git clone git@github.com:kotakondo/dynus.git
-cd /home/swarm/code/dynus_ws/src/dynus 
-git switch dev-non-uniform
-cd /home/swarm/code/dynus_ws/src
-git clone git@github.com:kotakondo/dynus_interfaces.git
-git clone https://github.com/kotakondo/octomap_mapping.git
-git clone https://github.com/kotakondo/realsense_gazebo_plugin.git
-git clone https://github.com/kotakondo/livox_laser_simulation_ros2.git
-git clone https://github.com/kotakondo/octomap_rviz_plugins.git
-git clone https://github.com/kotakondo/gazebo_ros_pkgs.git
-
-mkdir -p /home/swarm/code/decomp_ws/src
-cd /home/swarm/code/decomp_ws/src
-git clone https://github.com/kotakondo/DecompROS2.git
-mkdir -p /home/swarm/code/livox_ws/src
-cd /home/swarm/code/livox_ws/src
-git clone https://github.com/kotakondo/livox_ros_driver2.git
-cd /home/swarm/code
-git clone https://github.com/Livox-SDK/Livox-SDK2.git
-mkdir -p /home/swarm/code/dlio_ws/src
-cd /home/swarm/code/dlio_ws/src 
-git clone https://github.com/jrached/direct_lidar_inertial_odometry.git
+# Mavros Stack and Trajectory Generator ###############################################################################################
 mkdir -p /home/swarm/code/mavros_ws/src
 cd /home/swarm/code/mavros_ws/src
+git clone https://github.com/jrached/trajectory_generator_ros2.git
+git clone https://github.com/jrached/behavior_selector2.git
+git clone https://github.com/jrached/mission_mode.git
+git clone https://github.com/jrached/snapstack_msgs2.git 
 git clone https://github.com/jrached/ros2_px4_stack.git
 cd /home/swarm/code/mavros_ws/src/ros2_px4_stack
 git switch multiagent 
 
-# Build workspace 
-#decomp 
-cd /home/swarm/code/decomp_ws
-source /opt/ros/humble/setup.sh && colcon build --packages-select decomp_util
-source /home/swarm/code/decomp_ws/install/setup.sh && source /opt/ros/humble/setup.sh && colcon build
-
-#Livox-SDK2
-cd /home/swarm/code/Livox-SDK2
-mkdir build 
-cd /home/swarm/code/Livox-SDK2/build 
-cmake .. && make -j && sudo make install 
-
-#livox_ros_drver2
-cd /home/swarm/code/livox_ws/src/livox_ros_driver2
-source /opt/ros/humble/setup.sh && ./build.sh humble
-
-#dlio 
-cd /home/swarm/code/dlio_ws
-colcon build
-
 #mavros interface
 cd /home/swarm/code/mavros_ws
+colcon build --packages-select snapstack_msgs2 
+source install/setup.bash 
 colcon build 
 
-#Dynus 
-cd /home/swarm/code/dynus_ws
-source /opt/ros/humble/setup.sh 
-source /home/swarm/code/decomp_ws/install/setup.sh 
-export CMAKE_PREFIX_PATH=/home/swarm/code/livox_ws/install/livox_ros_driver2:/home/swarm/code/decomp_ws/install/decomp_util
-colcon build
-
-# Add livox to library path 
+# Add ros to library path 
 echo >> ~/.bashrc
-echo 'export LD_LIBRARY_PATH="/home/swarm/code/livox_ws/install/livox_ros_driver2/lib:${LD_LIBRARY_PATH}" ' >> ~/.bashrc
 echo 'export LD_LIBRARY_PATH="/opt/ros/humble/lib:${LD_LIBRARY_PATH}" ' >> ~/.bashrc
-echo 'export LD_LIBRARY_PATH="/home/swarm/code/decomp_ws/install/decomp_ros_msgs/lib:${LD_LIBRARY_PATH}" ' >> ~/.bashrc
-
-# Useful aliases 
-echo 'alias sb="source ~/.bashrc"' >> ~/.bashrc
-echo 'alias eb="code ~/.bashrc"' >> ~/.bashrc
-echo 'alias gs="git status"' >> ~/.bashrc
-echo 'alias gp="git push"' >> ~/.bashrc
-echo 'alias roscd="cd ~/code/dynus_ws"' >> ~/.bashrc
-echo 'alias cb="roscd && colcon build && sb"' >> ~/.bashrc
-echo 'alias ss="roscd && source install/setup.bash"' >> ~/.bashrc
-echo 'alias cbd="clear && roscd && colcon build && ss"' >> ~/.bashrc
-echo 'alias cbm="clear && roscd && colcon build --packages-select ros2_mapper && ss"' >> ~/.bashrc
-echo 'alias cbsl="roscd && colcon build --symlink-install && sb"' >> ~/.bashrc
-echo 'alias cbps="roscd && colcon build --packages-select"' >> ~/.bashrc
-echo 'alias tf_visualize="ros2 run rqt_tf_tree rqt_tf_tree"' >> ~/.bashrc
-echo 'alias tks="tmux kill-server"' >> ~/.bashrc
-
-
 source ~/.bashrc
-
 
 # Install mavros 
 cd /home/swarm
@@ -207,8 +143,10 @@ echo >> ~/.bashrc
 echo '# Path to library for cyclonedds' >> ~/.bashrc
 echo 'export LD_LIBRARY_PATH=/opt/ros/humble/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH' >> ~/.bashrc
 
-echo >> ~/.bashrc
-echo '# Source ros distro' >> ~/.bashrc
-echo 'source /opt/ros/humble/setup.bash' >> ~/.bashrc
+
+# Vehicle name  
+echo >> ~/.bashrc 
+echo '# Change to unique vehicle name' >> ~/.bashrc 
+echo 'export VEH_NAME="6QUAD"' >> ~/.bashrc 
 
 source ~/.bashrc
