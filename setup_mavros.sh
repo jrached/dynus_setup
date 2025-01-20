@@ -148,5 +148,6 @@ echo 'export LD_LIBRARY_PATH=/opt/ros/humble/lib/x86_64-linux-gnu:$LD_LIBRARY_PA
 echo >> ~/.bashrc 
 echo '# Change to unique vehicle name' >> ~/.bashrc 
 echo 'export VEH_NAME="6QUAD"' >> ~/.bashrc 
+echo 'export MAV_SYS_ID="1"' >> ~/.bashrc 
 
 source ~/.bashrc
