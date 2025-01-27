@@ -186,6 +186,7 @@ echo 'alias tks="tmux kill-server"' >> ~/.bashrc
 echo 'alias dynus="python3 ~/code/mavros_ws/src/scripts/livox_dynus_tmux.py"' >> ~/.bashrc 
 echo 'alias mocap_trajgen="python3 ~/code/mavros_ws/src/scripts/mocap_trajgen_tmux.py"' >> ~/.bashrc 
 
+
 source ~/.bashrc
 
 
@@ -206,4 +207,27 @@ echo '#!/bin/bash' >> ~/code/get_init_pose.sh
 echo >> ~/code/get_init_pose.sh 
 echo ' source ~/code/mavros_ws/install/setup.bash ' >> ~/code/get_init_pose.sh 
 echo ' eval $(ros2 run ros2_px4_stack get_init_pose) ' >> ~/code/get_init_pose.sh 
+<<<<<<< HEAD
 sudo chmod +x /home/${USER}/code/get_init_pose.sh 
+=======
+sudo chmod +x /home/swarm/code/get_init_pose.sh 
+
+# Install and configure cyclonedds
+sudo apt install -y ros-humble-rmw-cyclonedds-cpp
+
+echo >> ~/.bashrc
+echo '# ROS2 RTPS network' >> ~/.bashrc
+echo 'export ROS_DOMAIN_ID=10' >> ~/.bashrc
+echo 'export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp' >> ~/.bashrc
+echo 'export ROS_AUTOMATIC_DISCOVERY_RANGE=SUBNET' >> ~/.bashrc
+echo 'export CYCLONEDDS_URI="<CycloneDDS><Domain><General><NetworkInterfaceAddress>wlo1</NetworkInterfaceAddress></General></Domain></CycloneDDS>"' >> ~/.bashrc
+echo >> ~/.bashrc
+echo '# Path to library for cyclonedds' >> ~/.bashrc
+echo 'export LD_LIBRARY_PATH=/opt/ros/humble/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH' >> ~/.bashrc
+
+echo >> ~/.bashrc
+echo '# Source ros distro' >> ~/.bashrc
+echo 'source /opt/ros/humble/setup.bash' >> ~/.bashrc
+
+source ~/.bashrc
+
