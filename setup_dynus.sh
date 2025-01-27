@@ -5,7 +5,7 @@
 sudo -v 
 
 # Go to home directory and create code directory 
-cd /home/swarm
+cd /home/${USER}
 mkdir code
 
 # Basic software ########################################################################################################################################
@@ -85,16 +85,17 @@ export PATH="${PATH}:${GUROBI_HOME}/bin"
 export LD_LIBRARY_PATH="${GUROBI_HOME}/lib" 
 
 # Add github ssh key to known hosts
+touch ~/.ssh/known_hosts 
 echo >> ~/.ssh/known_hosts 
 ssh-keyscan github.com >> ~/.ssh/known_hosts
 
 # Dynus and dependencies ###############################################################################################
-mkdir -p /home/swarm/code/dynus_ws/src
-cd /home/swarm/code/dynus_ws/src
+mkdir -p /home/${USER}/code/dynus_ws/src
+cd /home/${USER}/code/dynus_ws/src
 git clone git@github.com:kotakondo/dynus.git
-cd /home/swarm/code/dynus_ws/src/dynus 
+cd /home/${USER}/code/dynus_ws/src/dynus 
 git switch dev-non-uniform
-cd /home/swarm/code/dynus_ws/src
+cd /home/${USER}/code/dynus_ws/src
 git clone git@github.com:kotakondo/dynus_interfaces.git
 git clone https://github.com/kotakondo/octomap_mapping.git
 git clone https://github.com/kotakondo/realsense_gazebo_plugin.git
@@ -102,59 +103,71 @@ git clone https://github.com/kotakondo/livox_laser_simulation_ros2.git
 git clone https://github.com/kotakondo/octomap_rviz_plugins.git
 git clone https://github.com/kotakondo/gazebo_ros_pkgs.git
 
-mkdir -p /home/swarm/code/decomp_ws/src
-cd /home/swarm/code/decomp_ws/src
+mkdir -p /home/${USER}/code/decomp_ws/src
+cd /home/${USER}/code/decomp_ws/src
 git clone https://github.com/kotakondo/DecompROS2.git
-mkdir -p /home/swarm/code/livox_ws/src
-cd /home/swarm/code/livox_ws/src
+mkdir -p /home/${USER}/code/livox_ws/src
+cd /home/${USER}/code/livox_ws/src
 git clone https://github.com/kotakondo/livox_ros_driver2.git
-cd /home/swarm/code
+cd /home/${USER}/code
 git clone https://github.com/Livox-SDK/Livox-SDK2.git
-mkdir -p /home/swarm/code/dlio_ws/src
-cd /home/swarm/code/dlio_ws/src 
+mkdir -p /home/${USER}/code/dlio_ws/src
+cd /home/${USER}/code/dlio_ws/src 
 git clone https://github.com/jrached/direct_lidar_inertial_odometry.git
-mkdir -p /home/swarm/code/mavros_ws/src
-cd /home/swarm/code/mavros_ws/src
+mkdir -p /home/${USER}/code/mavros_ws/src
+cd /home/${USER}/code/mavros_ws/src
 git clone https://github.com/jrached/ros2_px4_stack.git
-cd /home/swarm/code/mavros_ws/src/ros2_px4_stack
+cd /home/${USER}/code/mavros_ws/src/ros2_px4_stack
 git switch multiagent 
+mkdir -p /home/${USER}/code/trajgen_ws/src 
+cd /home/${USER}/code/trajgen_ws/src 
+git clone https://github.com/jrached/trajectory_generator_ros2.git
+git clone https://github.com/jrached/mission_mode.git
+git clone https://github.com/jrached/behavior_selector2.git
+git clone https://github.com/jrached/snapstack_msgs2.git 
 
 # Build workspace 
 #decomp 
-cd /home/swarm/code/decomp_ws
+cd /home/${USER}/code/decomp_ws
 source /opt/ros/humble/setup.sh && colcon build --packages-select decomp_util
-source /home/swarm/code/decomp_ws/install/setup.sh && source /opt/ros/humble/setup.sh && colcon build
+source /home/${USER}/code/decomp_ws/install/setup.sh && source /opt/ros/humble/setup.sh && colcon build
 
 #Livox-SDK2
-cd /home/swarm/code/Livox-SDK2
+cd /home/${USER}/code/Livox-SDK2
 mkdir build 
-cd /home/swarm/code/Livox-SDK2/build 
+cd /home/${USER}/code/Livox-SDK2/build 
 cmake .. && make -j && sudo make install 
 
 #livox_ros_drver2
-cd /home/swarm/code/livox_ws/src/livox_ros_driver2
+cd /home/${USER}/code/livox_ws/src/livox_ros_driver2
 source /opt/ros/humble/setup.sh && ./build.sh humble
 
 #dlio 
-cd /home/swarm/code/dlio_ws
+cd /home/${USER}/code/dlio_ws
 colcon build
 
+#trajectory generator 
+cd /home/${USER}/code/trajgen_ws
+colcon build --packages-select snapstack_msgs2
+source install/setup.bash 
+colcon build 
+
 #mavros interface
-cd /home/swarm/code/mavros_ws
+cd /home/${USER}/code/mavros_ws
 colcon build 
 
 #Dynus 
-cd /home/swarm/code/dynus_ws
+cd /home/${USER}/code/dynus_ws
 source /opt/ros/humble/setup.sh 
-source /home/swarm/code/decomp_ws/install/setup.sh 
-export CMAKE_PREFIX_PATH=/home/swarm/code/livox_ws/install/livox_ros_driver2:/home/swarm/code/decomp_ws/install/decomp_util
+source /home/${USER}/code/decomp_ws/install/setup.sh 
+export CMAKE_PREFIX_PATH=/home/${USER}/code/livox_ws/install/livox_ros_driver2:/home/${USER}/code/decomp_ws/install/decomp_util
 colcon build
 
 # Add livox to library path 
 echo >> ~/.bashrc
-echo 'export LD_LIBRARY_PATH="/home/swarm/code/livox_ws/install/livox_ros_driver2/lib:${LD_LIBRARY_PATH}" ' >> ~/.bashrc
+echo 'export LD_LIBRARY_PATH="/home/${USER}/code/livox_ws/install/livox_ros_driver2/lib:${LD_LIBRARY_PATH}" ' >> ~/.bashrc
 echo 'export LD_LIBRARY_PATH="/opt/ros/humble/lib:${LD_LIBRARY_PATH}" ' >> ~/.bashrc
-echo 'export LD_LIBRARY_PATH="/home/swarm/code/decomp_ws/install/decomp_ros_msgs/lib:${LD_LIBRARY_PATH}" ' >> ~/.bashrc
+echo 'export LD_LIBRARY_PATH="/home/${USER}/code/decomp_ws/install/decomp_ros_msgs/lib:${LD_LIBRARY_PATH}" ' >> ~/.bashrc
 
 # Useful aliases 
 echo 'alias sb="source ~/.bashrc"' >> ~/.bashrc
@@ -170,12 +183,14 @@ echo 'alias cbsl="roscd && colcon build --symlink-install && sb"' >> ~/.bashrc
 echo 'alias cbps="roscd && colcon build --packages-select"' >> ~/.bashrc
 echo 'alias tf_visualize="ros2 run rqt_tf_tree rqt_tf_tree"' >> ~/.bashrc
 echo 'alias tks="tmux kill-server"' >> ~/.bashrc
+echo 'alias dynus="python3 ~/code/mavros_ws/src/scripts/livox_dynus_tmux.py"' >> ~/.bashrc 
+echo 'alias mocap_trajgen="python3 ~/code/mavros_ws/src/scripts/mocap_trajgen_tmux.py"' >> ~/.bashrc 
 
 source ~/.bashrc
 
 
 # Install mavros 
-cd /home/swarm
+cd /home/${USER}
 sudo apt install -y ros-humble-mavros 
 sudo apt install -y ros-humble-mavros-extras 
 wget https://raw.githubusercontent.com/mavlink/mavros/ros2/mavros/scripts/install_geographiclib_datasets.sh
@@ -191,4 +206,4 @@ echo '#!/bin/bash' >> ~/code/get_init_pose.sh
 echo >> ~/code/get_init_pose.sh 
 echo ' source ~/code/mavros_ws/install/setup.bash ' >> ~/code/get_init_pose.sh 
 echo ' eval $(ros2 run ros2_px4_stack get_init_pose) ' >> ~/code/get_init_pose.sh 
-sudo chmod +x /home/swarm/code/get_init_pose.sh 
+sudo chmod +x /home/${USER}/code/get_init_pose.sh 
