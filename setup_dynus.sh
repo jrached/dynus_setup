@@ -207,10 +207,7 @@ echo '#!/bin/bash' >> ~/code/get_init_pose.sh
 echo >> ~/code/get_init_pose.sh 
 echo ' source ~/code/mavros_ws/install/setup.bash ' >> ~/code/get_init_pose.sh 
 echo ' eval $(ros2 run ros2_px4_stack get_init_pose) ' >> ~/code/get_init_pose.sh 
-<<<<<<< HEAD
 sudo chmod +x /home/${USER}/code/get_init_pose.sh 
-=======
-sudo chmod +x /home/swarm/code/get_init_pose.sh 
 
 # Install and configure cyclonedds
 sudo apt install -y ros-humble-rmw-cyclonedds-cpp
