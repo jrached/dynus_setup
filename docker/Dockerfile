@@ -3,12 +3,14 @@ FROM ros:humble
 LABEL Maintainer="Juan Rached <jrached@mit.edu>" \
       Description="Ubuntu 22.04, ROS2 humble for DYNUS"
 
+
 # Declare arguments
 ARG VEH_NAME
 ARG MAV_SYS_ID 
 
 ENV VEH_NAME=$VEH_NAME
 ENV MAV_SYS_ID=$MAV_SYS_ID
+ENV DUMMYY=0
 
 # Add root user to dialout group 
 RUN usermod -aG dialout root 
@@ -27,9 +29,9 @@ RUN apt-get update
 RUN apt-get upgrade -y
 RUN apt-get install -q -y --no-install-recommends git tmux vim wget tmuxp make ssh openssh-client openssh-server net-tools g++ xterm python3-pip 
 RUN pip install pymavlink 
-RUN apt install -y libomp-dev libpcl-dev libeigen3-dev
+# RUN apt install -y libomp-dev libpcl-dev libeigen3-dev #UNCOMMENT
 
-# Copy ssh key and add github to known ssh hosts 
+# Copy ssh key and gurobi license and add github to known ssh hosts 
 #########################################
 RUN mkdir -p /root/.ssh && touch /root/.ssh/known_hosts && ssh-keyscan github.com >> /root/.ssh/known_hosts 
 ADD id_ed25519 /root/.ssh/id_ed25519
@@ -222,7 +224,6 @@ RUN echo >> ~/.bashrc
 RUN echo '# Source ros distro' >> ~/.bashrc
 RUN echo 'source /opt/ros/humble/setup.bash' >> ~/.bashrc
 
-
 # Set up Entry Point
 # ##########################################
 # COPY ./humble_entrypoint.sh /humble_entrypoint.sh 
@@ -232,42 +233,42 @@ WORKDIR /root
 ENTRYPOINT ["/bin/bash", "-c", "source /opt/ros/humble/setup.bash && exec bash -l"]
 
 
-# RUN . /opt/ros/humble/setup.sh && colcon build
+# # RUN . /opt/ros/humble/setup.sh && colcon build
 
-# RUN pip install --upgrade pip
-# RUN pip install python-box numpy-quaternion termcolor -U scikit-image defusedxml PySide2 wheel
-# RUN pip install empy
+# # RUN pip install --upgrade pip
+# # RUN pip install python-box numpy-quaternion termcolor -U scikit-image defusedxml PySide2 wheel
+# # RUN pip install empy
 
-# ## Download and install motlee and clipper in the submodules directory
-# WORKDIR /root/code/ws/src/puma/submodules
+# # ## Download and install motlee and clipper in the submodules directory
+# # WORKDIR /root/code/ws/src/puma/submodules
 
-# # Clone the FastSAM repository and install it
-# ##########################################
-# WORKDIR /root/code/ws/src/puma/submodules/FastSAM
-# RUN pip install -r requirements.txt
-# RUN pip install git+https://github.com/openai/CLIP.git
-# RUN pip install -e .
+# # # Clone the FastSAM repository and install it
+# # ##########################################
+# # WORKDIR /root/code/ws/src/puma/submodules/FastSAM
+# # RUN pip install -r requirements.txt
+# # RUN pip install git+https://github.com/openai/CLIP.git
+# # RUN pip install -e .
 
-# # Install motlee
-# ##########################################
-# WORKDIR /root/code/ws/src/puma/submodules/motlee
-# RUN pip install --ignore-installed PyYAML
-# RUN pip install -e .
+# # # Install motlee
+# # ##########################################
+# # WORKDIR /root/code/ws/src/puma/submodules/motlee
+# # RUN pip install --ignore-installed PyYAML
+# # RUN pip install -e .
 
-# # Install clipper
-# ##########################################
-# WORKDIR /root/code/ws/src/puma/submodules/clipper/build
-# RUN cmake ..
-# RUN make
-# RUN python3 -m pip install bindings/python
-# WORKDIR /root/code/ws/src/puma
+# # # Install clipper
+# # ##########################################
+# # WORKDIR /root/code/ws/src/puma/submodules/clipper/build
+# # RUN cmake ..
+# # RUN make
+# # RUN python3 -m pip install bindings/python
+# # WORKDIR /root/code/ws/src/puma
 
-# # Create a symlink of FastSAM to the scripts directory
-# # Note that "ln -s FastSAM ../../puma/puma/scripts/FastSAM/" creates a broken link (https://mokacoding.com/blog/symliks-in-git/)
-# ##########################################
-# WORKDIR /root/code/ws/src/puma/puma/scripts
-# RUN ln -s ../../../puma/submodules/FastSAM/ .
+# # # Create a symlink of FastSAM to the scripts directory
+# # # Note that "ln -s FastSAM ../../puma/puma/scripts/FastSAM/" creates a broken link (https://mokacoding.com/blog/symliks-in-git/)
+# # ##########################################
+# # WORKDIR /root/code/ws/src/puma/puma/scripts
+# # RUN ln -s ../../../puma/submodules/FastSAM/ .
 
-# # Need to run this to make Gazebo publish images
-# ##########################################
-# RUN apt-get install  -y
+# # # Need to run this to make Gazebo publish images
+# # ##########################################
+# # RUN apt-get install  -y

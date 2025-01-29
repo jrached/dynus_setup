@@ -1,16 +1,22 @@
-# inlcude ~/.bashrc 
+#!/bin/bash 
+
+SHELL:=/bin/bash
 
 build: 
+	bash -c " echo '${VEH_NAME}'"
+	echo "$(VEH_NAME)"
 	docker build --build-arg VEH_NAME=${VEH_NAME} --build-arg MAV_SYS_ID=${MAV_SYS_ID} -t dynus:1 .
 
 dev-build: 
+	docker build --build-arg VEH_NAME=${VEH_NAME} --build-arg MAV_SYS_ID=${MAV_SYS_ID} -t dynus:1 -f /home/swarm/docker/dynus_setup/docker/Dockerfile /home/swarm/docker/build_context
 	docker build --build-arg VEH_NAME=${VEH_NAME} --build-arg MAV_SYS_ID=${MAV_SYS_ID} -t dynus:1 .
+
 
 build-no-cache:
 	docker build --build-arg DUMMY=`date +%s` --build-arg VEH_NAME=${VEH_NAME} --build-arg MAV_SYS_ID=${MAV_SYS_ID} -t dynus:1 .
 
-run-container: 
-	sudo docker run -it --privileged --network host --rm  dynus:1 .
+run-hw: 
+	sudo docker run -it --privileged --network host --volume=${PWD}/gurobi.lic:/opt/gurobi/gurobi.lic:ro --rm  dynus:1 
 
 run-sim:
 	docker run  -it \
