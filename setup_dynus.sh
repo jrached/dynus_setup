@@ -94,7 +94,7 @@ mkdir -p /home/${USER}/code/dynus_ws/src
 cd /home/${USER}/code/dynus_ws/src
 git clone git@github.com:kotakondo/dynus.git
 cd /home/${USER}/code/dynus_ws/src/dynus 
-git switch dev-non-uniform
+git switch hw
 cd /home/${USER}/code/dynus_ws/src
 git clone git@github.com:kotakondo/dynus_interfaces.git
 git clone https://github.com/kotakondo/octomap_mapping.git
