@@ -69,7 +69,6 @@ Also clone the dynus, mavros, and livox repos so the volumes don't wipe them in 
 
 ```sh
 mkdir -p ~/docker/build_context/code && cd ~/docker/build_context/code && 
-git clone https://github.com/kotakondo/livox_ros_driver2.git &&
 git clone https://github.com/jrached/ros2_px4_stack.git &&
 cd ~/docker/build_context/code/ros2_px4_stack &&
 git switch multiagent &&
@@ -77,6 +76,9 @@ cd ~/docker/build_context/code &&
 git clone git@github.com:kotakondo/dynus.git &&
 cd ~/docker/build_context/code/dynus &&
 git switch hw && 
+mkdir -p ~/docker/build_context/code/livox_ws/src &&
+cd ~/docker/build_context/code/livox_ws/src && 
+git clone https://github.com/kotakondo/livox_ros_driver2.git &&
 cd ~/docker 
 ```
 
@@ -95,7 +97,7 @@ sudo docker run -it \
       --network host \
       -v ~/docker/build_context/gurobi.lic:/opt/gurobi/gurobi.lic:ro \
       -v ~/docker/build_context/code/dynus:/root/code/dynus_ws/src/dynus \
-      -v ~/docker/build_context/code/livox_ros_driver2:/root/code/livox_ws/src/livox_ros_driver2 \
+      -v ~/docker/build_context/code/livox_ws:/root/code/livox_ws \
       -v ~/docker/build_context/code/ros2_px4_stack:/root/code/mavros_ws/src/ros2_px4_stack \
       --rm  dynus:1
 ```

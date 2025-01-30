@@ -227,9 +227,7 @@ RUN echo 'source /opt/ros/humble/setup.bash' >> ~/.bashrc
 # Set up Entry Point
 # ##########################################
 WORKDIR /root 
-ENTRYPOINT ["/bin/bash", "-c", "source /opt/ros/humble/setup.bash && exec bash -l"]
-CMD ["/bin/bash", "-c", "cd ~/code/livox_ws/src/livox_ros_driver2 && ./build humble && exec bash -l"]
-
+ENTRYPOINT ["/bin/bash", "-c", "source /opt/ros/humble/setup.bash && echo 'You have entered the swarm' && exec bash -l"]
 
 # # RUN . /opt/ros/humble/setup.sh && colcon build
 

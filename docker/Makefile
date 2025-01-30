@@ -17,7 +17,7 @@ run-hw:
 		--network host \
 		-v ~/docker/build_context/gurobi.lic:/opt/gurobi/gurobi.lic:ro \
 		-v ~/docker/build_context/code/dynus:/root/code/dynus_ws/src/dynus \
-		-v ~/docker/build_context/code/livox_ros_driver2:/root/code/livox_ws/src/livox_ros_driver2 \
+		-v ~/docker/build_context/code/livox_ws:/root/code/livox_ws \
 		--rm  dynus:1
 
 run-sim:
@@ -40,6 +40,9 @@ run-rr01:
 				--env="QT_X11_NO_MITSHM=1" \
 				--volume=${PWD}/gurobi.lic:/opt/gurobi/gurobi.lic:ro \
 				--rm dynus:1
+
+
+
 
 
 # old build 
