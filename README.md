@@ -1,4 +1,6 @@
-# dynus_setup
+# pixstack_setup
+
+TODO: Rename repo to pixstack_setup
 
 Before running the docker image, let's configure the local machine. 
 
@@ -60,21 +62,16 @@ cp ~/.ssh/id_ed25519 ~/docker/build_context &&
 cd ~/docker &&
 git clone git@github.com:jrached/dynus_setup.git && 
 cd ~/docker/dynus_setup && 
-git switch dynus_docker &&
 cp ~/docker/dynus_setup/wls_license/gurobi.lic ~/docker/build_context 
 ```
 
-Also clone the dynus, mavros, and livox repos so the volumes don't wipe them in the container. (TODO: Use named volumes to avoid this.)
+Also clone the mavros and livox repos so the volumes don't wipe them in the container. (TODO: Use named volumes to avoid this.)
 
 ```sh
 mkdir -p ~/docker/build_context/code && cd ~/docker/build_context/code && 
 git clone https://github.com/jrached/ros2_px4_stack.git &&
 cd ~/docker/build_context/code/ros2_px4_stack &&
 git switch multiagent &&
-cd ~/docker/build_context/code && 
-git clone git@github.com:kotakondo/dynus.git &&
-cd ~/docker/build_context/code/dynus &&
-git switch hw && 
 mkdir -p ~/docker/build_context/code/livox_ws/src &&
 cd ~/docker/build_context/code/livox_ws/src && 
 git clone https://github.com/kotakondo/livox_ros_driver2.git &&
@@ -84,7 +81,7 @@ cd ~/docker
 2. Build the docker container with 
 
 ```sh
-sudo docker build --build-arg VEH_NAME=${VEH_NAME} --build-arg MAV_SYS_ID=${MAV_SYS_ID} -t dynus:1 -f /home/swarm/docker/dynus_setup/docker/Dockerfile /home/swarm/docker/build_context
+sudo docker build --build-arg VEH_NAME=${VEH_NAME} --build-arg MAV_SYS_ID=${MAV_SYS_ID} -t pixstack:1 -f /home/swarm/docker/dynus_setup/docker/Dockerfile /home/swarm/docker/build_context
 
 ``` 
 
@@ -95,10 +92,9 @@ sudo docker run -it \
       --privileged \
       --network host \
       -v ~/docker/build_context/gurobi.lic:/opt/gurobi/gurobi.lic:ro \
-      -v ~/docker/build_context/code/dynus:/root/code/dynus_ws/src/dynus \
       -v ~/docker/build_context/code/livox_ws:/root/code/livox_ws \
       -v ~/docker/build_context/code/ros2_px4_stack:/root/code/mavros_ws/src/ros2_px4_stack \
-      --rm  dynus:1
+      --rm  pixstack:1
 ```
 
 4. Inside the container, run 
@@ -115,24 +111,18 @@ cd ~/code/livox_ws/src/livox_ros_driver2
 ./build.sh humble 
 ```
 
-6. Run dynus with
-
-```sh
-dynus 
-```
-
-or the trajectory generator with 
+6. Run the trajectory generator with 
 
 ```sh
 mocap_trajgen
 ```
 
-7. Optionally, in the host machine add an alias to run the docker container with dynus_docker:
+7. Optionally, in the host machine add an alias to run the docker container with pixstack_docker:
 
 ```sh
 echo >> ~/.bashrc 
-echo '# Alias for dynus docker' >> ~/.bashrc 
-echo 'alias dynus_docker="cd ~/docker/dynus_setup/docker && make run-hw"' >> ~/.bashrc
+echo '# Alias for pixstack docker' >> ~/.bashrc 
+echo 'alias pixstack_docker="cd ~/docker/dynus_setup/docker && make run-hw"' >> ~/.bashrc
 source ~/.bashrc
 ```
 

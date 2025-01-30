@@ -1,7 +1,7 @@
 FROM ros:humble
 
 LABEL Maintainer="Juan Rached <jrached@mit.edu>" \
-      Description="Ubuntu 22.04, ROS2 humble for DYNUS"
+      Description="Ubuntu 22.04, ROS2 humble for PIXSTACK"
 
 
 # Declare arguments
@@ -29,7 +29,7 @@ RUN apt-get update
 RUN apt-get upgrade -y
 RUN apt-get install -q -y --no-install-recommends git tmux vim wget tmuxp make ssh openssh-client openssh-server net-tools g++ xterm python3-pip 
 RUN pip install pymavlink 
-# RUN apt install -y libomp-dev libpcl-dev libeigen3-dev #UNCOMMENT
+RUN apt install -y libomp-dev libpcl-dev libeigen3-dev 
 
 # Copy ssh key and gurobi license and add github to known ssh hosts 
 #########################################
@@ -81,27 +81,14 @@ ENV GUROBI_HOME="/opt/gurobi1103/linux64"
 ENV PATH="${PATH}:${GUROBI_HOME}/bin"
 ENV LD_LIBRARY_PATH="${GUROBI_HOME}/lib"
 
-# # Install DYNUS and dependencies
+# # Install dlio, mavros interface, and trajectory generator
 # ##########################################
 RUN mkdir -p /root/code/dynus_ws/src
 WORKDIR /root/code/dynus_ws/src
 # dummy arg to invalidate cache and build from here
 ARG DUMMY=unknown
 RUN echo DUMMY=${DUMMY}
-RUN git clone git@github.com:kotakondo/dynus.git 
-WORKDIR /root/code/dynus_ws/src/dynus
-RUN git switch hw
-WORKDIR /root/code/dynus_ws/src
-RUN git clone git@github.com:kotakondo/dynus_interfaces.git 
-RUN git clone https://github.com/kotakondo/octomap_mapping.git
-RUN git clone https://github.com/kotakondo/realsense_gazebo_plugin.git
-RUN git clone https://github.com/kotakondo/livox_laser_simulation_ros2.git
-RUN git clone https://github.com/kotakondo/octomap_rviz_plugins.git
-RUN git clone https://github.com/kotakondo/gazebo_ros_pkgs.git
 
-RUN mkdir -p /root/code/decomp_ws/src
-WORKDIR /root/code/decomp_ws/src
-RUN git clone https://github.com/kotakondo/DecompROS2.git
 RUN mkdir -p /root/code/livox_ws/src
 WORKDIR /root/code/livox_ws/src
 RUN git clone https://github.com/kotakondo/livox_ros_driver2.git
@@ -124,11 +111,6 @@ RUN git clone https://github.com/jrached/snapstack_msgs2.git
 
 # Build the workspace
 ##########################################
-
-### for decomp
-WORKDIR /root/code/decomp_ws
-RUN . /opt/ros/humble/setup.sh && colcon build --packages-select decomp_util
-RUN . /root/code/decomp_ws/install/setup.sh && . /opt/ros/humble/setup.sh && colcon build
 
 ### for Livox-SDK2
 WORKDIR /root/code/Livox-SDK2
@@ -153,14 +135,6 @@ RUN bash -c '. install/setup.bash && colcon build'
 WORKDIR /root/code/mavros_ws
 RUN colcon build 
 
-### for other packages
-WORKDIR /root/code/dynus_ws
-# (1) gurobi dependencies, (2) decomp dependencies, (3) livox dependencies for colcon build
-RUN bash -c '. /opt/ros/humble/setup.sh && \
-    . /root/code/decomp_ws/install/setup.sh && \
-    export CMAKE_PREFIX_PATH=/root/code/livox_ws/install/livox_ros_driver2:/root/code/decomp_ws/install/decomp_util && \
-    colcon build'
-
 # Gazebo
 ##########################################
 ### handle ALSA-related error
@@ -180,16 +154,10 @@ RUN echo 'alias sb="source ~/.bashrc"' >> ~/.bashrc
 RUN echo 'alias eb="code ~/.bashrc"' >> ~/.bashrc
 RUN echo 'alias gs="git status"' >> ~/.bashrc
 RUN echo 'alias gp="git push"' >> ~/.bashrc
-RUN echo 'alias roscd="cd ~/code/dynus_ws"' >> ~/.bashrc
-RUN echo 'alias cb="roscd && colcon build && sb"' >> ~/.bashrc
-RUN echo 'alias ss="roscd && source install/setup.bash"' >> ~/.bashrc
-RUN echo 'alias cbd="clear && roscd && colcon build && ss"' >> ~/.bashrc
-RUN echo 'alias cbm="clear && roscd && colcon build --packages-select ros2_mapper && ss"' >> ~/.bashrc
 RUN echo 'alias cbsl="roscd && colcon build --symlink-install && sb"' >> ~/.bashrc
 RUN echo 'alias cbps="roscd && colcon build --packages-select"' >> ~/.bashrc
 RUN echo 'alias tf_visualize="ros2 run rqt_tf_tree rqt_tf_tree"' >> ~/.bashrc
 RUN echo 'alias tks="tmux kill-server"' >> ~/.bashrc
-RUN echo 'alias dynus="python3 /root/code/mavros_ws/src/ros2_px4_stack/scripts/livox_dynus_tmux.py"' >> ~/.bashrc 
 RUN echo 'alias mocap_trajgen="python3 /root/code/mavros_ws/src/ros2_px4_stack/scripts/mocap_trajgen_tmux.py"' >> ~/.bashrc 
 
 ### Install mavros 
@@ -228,43 +196,3 @@ RUN echo 'source /opt/ros/humble/setup.bash' >> ~/.bashrc
 # ##########################################
 WORKDIR /root 
 ENTRYPOINT ["/bin/bash", "-c", "source /opt/ros/humble/setup.bash && echo 'You have entered the swarm' && exec bash -l"]
-
-# # RUN . /opt/ros/humble/setup.sh && colcon build
-
-# # RUN pip install --upgrade pip
-# # RUN pip install python-box numpy-quaternion termcolor -U scikit-image defusedxml PySide2 wheel
-# # RUN pip install empy
-
-# # ## Download and install motlee and clipper in the submodules directory
-# # WORKDIR /root/code/ws/src/puma/submodules
-
-# # # Clone the FastSAM repository and install it
-# # ##########################################
-# # WORKDIR /root/code/ws/src/puma/submodules/FastSAM
-# # RUN pip install -r requirements.txt
-# # RUN pip install git+https://github.com/openai/CLIP.git
-# # RUN pip install -e .
-
-# # # Install motlee
-# # ##########################################
-# # WORKDIR /root/code/ws/src/puma/submodules/motlee
-# # RUN pip install --ignore-installed PyYAML
-# # RUN pip install -e .
-
-# # # Install clipper
-# # ##########################################
-# # WORKDIR /root/code/ws/src/puma/submodules/clipper/build
-# # RUN cmake ..
-# # RUN make
-# # RUN python3 -m pip install bindings/python
-# # WORKDIR /root/code/ws/src/puma
-
-# # # Create a symlink of FastSAM to the scripts directory
-# # # Note that "ln -s FastSAM ../../puma/puma/scripts/FastSAM/" creates a broken link (https://mokacoding.com/blog/symliks-in-git/)
-# # ##########################################
-# # WORKDIR /root/code/ws/src/puma/puma/scripts
-# # RUN ln -s ../../../puma/submodules/FastSAM/ .
-
-# # # Need to run this to make Gazebo publish images
-# # ##########################################
-# # RUN apt-get install  -y
