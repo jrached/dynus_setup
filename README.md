@@ -59,6 +59,7 @@ mkdir -p ~/docker/build_context &&
 cp ~/.ssh/id_ed25519 ~/docker/build_context &&
 cd ~/docker &&
 git clone git@github.com:jrached/dynus_setup.git && 
+cd ~/docker/dynus_setup && 
 git switch docker &&
 cp ~/docker/dynus_setup/wls_license/gurobi.lic ~/docker/build_context 
 
