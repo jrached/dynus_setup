@@ -52,7 +52,7 @@ sudo docker run hello-world
 
 Once that's done, we can setup the docker container.
 
-1. Copy and paste the following code to a terminal window to create the build content directory, copy necessary files there, and git clone this repo. 
+1. Copy and paste the following code to a terminal window to create the build context directory, copy necessary files there, and git clone this repo. 
 
 ```sh
 mkdir -p ~/docker/build_context &&
@@ -62,7 +62,6 @@ git clone git@github.com:jrached/dynus_setup.git &&
 cd ~/docker/dynus_setup && 
 git switch docker &&
 cp ~/docker/dynus_setup/wls_license/gurobi.lic ~/docker/build_context 
-
 ```
 
 Also clone the dynus, mavros, and livox repos so the volumes don't wipe them in the container. (TODO: Use named volumes to avoid this.)
@@ -126,6 +125,14 @@ or the trajectory generator with
 
 ```sh
 mocap_trajgen
+```
+
+7. Optionally, in the host machine add an alias to run the docker container with dynus_docker:
+
+```sh
+echo >> ~/.bashrc 
+echo '# Alias for dynus docker' >> ~/.bashrc 
+echo 'alias dynus_docker="cd ~/docker/dynus_setup/docker && make run-hw"' >> ~/.bashrc
 ```
 
  
