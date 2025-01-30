@@ -29,7 +29,7 @@ RUN apt-get update
 RUN apt-get upgrade -y
 RUN apt-get install -q -y --no-install-recommends git tmux vim wget tmuxp make ssh openssh-client openssh-server net-tools g++ xterm python3-pip 
 RUN pip install pymavlink 
-RUN apt install -y libomp-dev libpcl-dev libeigen3-dev 
+# RUN apt install -y libomp-dev libpcl-dev libeigen3-dev
 
 # Copy ssh key and gurobi license and add github to known ssh hosts 
 #########################################
@@ -47,11 +47,9 @@ RUN apt-get install -y  ros-${ROS_DISTRO}-octomap \
                         ros-${ROS_DISTRO}-octomap-msgs \
                         ros-${ROS_DISTRO}-octomap-ros \
                         ros-${ROS_DISTRO}-octomap-rviz-plugins \
-                        ros-${ROS_DISTRO}-gazebo-* \
                         ros-${ROS_DISTRO}-pcl-conversions \
                         ros-${ROS_DISTRO}-example-interfaces \
                         ros-${ROS_DISTRO}-pcl-ros \
-                        ros-${ROS_DISTRO}-rviz2 \
                         ros-${ROS_DISTRO}-rqt-gui \
                         ros-${ROS_DISTRO}-rqt-gui-py \
                         ros-${ROS_DISTRO}-tf2-tools \
@@ -61,13 +59,8 @@ RUN apt install -y  ros-${ROS_DISTRO}-desktop \
                         ros-dev-tools \
                         ros-${ROS_DISTRO}-turtlesim \
                         ros-${ROS_DISTRO}-rqt* \
-                        ros-${ROS_DISTRO}-rviz2 \
-                        # ros-${ROS_DISTRO}-gazebo-ros-pkgs \
-                        ros-${ROS_DISTRO}-rviz-common \ 
                         libpcl-dev \
                         build-essential
-
-
 # # Gurobi
 # ##########################################
 RUN wget https://packages.gurobi.com/11.0/gurobi11.0.3_linux64.tar.gz -P . && \
@@ -83,8 +76,6 @@ ENV LD_LIBRARY_PATH="${GUROBI_HOME}/lib"
 
 # # Install dlio, mavros interface, and trajectory generator
 # ##########################################
-RUN mkdir -p /root/code/dynus_ws/src
-WORKDIR /root/code/dynus_ws/src
 # dummy arg to invalidate cache and build from here
 ARG DUMMY=unknown
 RUN echo DUMMY=${DUMMY}
