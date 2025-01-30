@@ -1,6 +1,6 @@
 # dynus_setup
 
-Before running the docker image, we need to configure a few things on the local machine. 
+Before running the docker image, let's configure the local machine. 
 
 1. Generate key with gen_ssh_key.sh file and add it to your github account. You can follow this guide: 
 
