@@ -65,6 +65,17 @@ cp ~/docker/dynus_setup/wls_license/gurobi.lic ~/docker/build_context
 
 ```
 
+Also clone the dynus and livox repos so the volumes don't wipe them in the container. (TODO: Use named volumes to avoid this.)
+
+```sh
+mkdir -p ~/docker/build_context/code && cd ~/docker/build_context/code && 
+git clone https://github.com/kotakondo/livox_ros_driver2.git &&
+git clone git@github.com:kotakondo/dynus.git &&
+cd ~/docker/build_context/code/dynus &&
+git switch hw && 
+cd ~/docker 
+```
+
 2. Build the docker container with 
 
 ```sh
