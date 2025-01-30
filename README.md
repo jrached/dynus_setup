@@ -79,7 +79,7 @@ cd ~/docker
 2. Build the docker container with 
 
 ```sh
-docker build --build-arg VEH_NAME=${VEH_NAME} --build-arg MAV_SYS_ID=${MAV_SYS_ID} -t dynus:1 -f /home/swarm/docker/dynus_setup/docker/Dockerfile /home/swarm/docker/build_context
+sudo docker build --build-arg VEH_NAME=${VEH_NAME} --build-arg MAV_SYS_ID=${MAV_SYS_ID} -t dynus:1 -f /home/swarm/docker/dynus_setup/docker/Dockerfile /home/swarm/docker/build_context
 
 ``` 
 
