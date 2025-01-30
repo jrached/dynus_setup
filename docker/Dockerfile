@@ -226,11 +226,9 @@ RUN echo 'source /opt/ros/humble/setup.bash' >> ~/.bashrc
 
 # Set up Entry Point
 # ##########################################
-# COPY ./humble_entrypoint.sh /humble_entrypoint.sh 
-# RUN chmod +x /humble_entrypoint.sh 
-
 WORKDIR /root 
 ENTRYPOINT ["/bin/bash", "-c", "source /opt/ros/humble/setup.bash && exec bash -l"]
+CMD ["/bin/bash", "-c", "cd ~/code/livox_ws/src/livox_ros_driver2 && ./build humble && exec bash -l"]
 
 
 # # RUN . /opt/ros/humble/setup.sh && colcon build

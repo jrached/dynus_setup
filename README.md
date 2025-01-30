@@ -96,14 +96,18 @@ sudo docker run -it \
 
 ```
 
-4. Inside the container, modify the lidar's ip in the MID360 config file in /root/code/livox_ws/src/livox_ros_driver2/config to be 192.168.1.1xx where xx are the last two digits of the lidar's serial number. 
-
-5. Colcon build and source livox driver workspace inside container
+4. Inside the container, run 
 
 ```sh
-cd /root/code/livox_ws &&
-colcon build && source install/setup.bash &
-cd 
+vim ~/code/livox_ws/src/livox_ros_driver2/config/MID360_config.json 
+```
+
+And change the lidar's ip to 192.168.1.1xx where xx are the last two digits of the lidar's serial number. 
+Then build the livox workspace again with 
+
+```sh 
+cd ~/code/livox_ws/src/livox_ros_driver2 
+./build.sh humble 
 ```
 
 6. Run dynus with
