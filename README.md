@@ -1,9 +1,5 @@
 # dynus_setup
 
-```sh
-echo "some code here" 
-```
-
 1. Clone this repo.
 2. Generate key with gen_ssh_key.sh file and add it to your github account
 3. Source setup_dynus.sh script 
