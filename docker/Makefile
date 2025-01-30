@@ -13,13 +13,12 @@ build-no-cache:
 
 run-hw: 
 	sudo docker run -it \
-	--privileged \
-	--network host \ 
-	-v ${PWD}/gurobi.lic:/opt/gurobi/gurobi.lic:ro \
-	-v code/dynus:/root/code/dynus_ws/src/dynus \
-	-v code/livox_ros_driver2:/root/code/livox_ws/src/livox_ros_driver2 \
-	--rm  dynus:1
-	 
+		--privileged \
+		--network host \
+		-v ~/docker/build_context/gurobi.lic:/opt/gurobi/gurobi.lic:ro \
+		-v ~/docker/build_context/code/dynus:/root/code/dynus_ws/src/dynus \
+		-v ~/docker/build_context/code/livox_ros_driver2:/root/code/livox_ws/src/livox_ros_driver2 \
+		--rm  dynus:1
 
 run-sim:
 	docker run  -it \
@@ -47,7 +46,7 @@ run-rr01:
 # docker build --build-arg GIT_ACCESS_TOKEN=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 -t dynus:1 .
 
 # works run 
-# sudo docker run -it --privileged --network host --volume=${PWD}/gurobi.lic:/opt/gurobi/gurobi.lic:ro --rm  dynus:1 
+# sudo docker run -it --privileged --network host -v ${PWD}/gurobi.lic:/opt/gurobi/gurobi.lic:ro -v code/dynus:/root/code/dynus_ws/src/dynus -v code/livox_ros_driver2:/root/code/livox_ws/src/livox_ros_driver2 --rm  dynus:1 
 
 ####TODO: 
 # 1. Modify run command to have 3 volumes: One for the gurobi license, one for the livox_ws and one for dynus_ws 

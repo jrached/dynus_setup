@@ -74,12 +74,13 @@ docker build --build-arg VEH_NAME=${VEH_NAME} --build-arg MAV_SYS_ID=${MAV_SYS_I
 
 ```sh
 sudo docker run -it \
-	--privileged \
-	--network host \ 
-	-v ${PWD}/gurobi.lic:/opt/gurobi/gurobi.lic:ro \
-	-v code/dynus:/root/code/dynus_ws/src/dynus \
-	-v code/livox_ros_driver2:/root/code/livox_ws/src/livox_ros_driver2 \
-	--rm  dynus:1 
+      --privileged \
+      --network host \
+      -v ~/docker/build_context/gurobi.lic:/opt/gurobi/gurobi.lic:ro \
+      -v ~/docker/build_context/code/dynus:/root/code/dynus_ws/src/dynus \
+      -v ~/docker/build_context/code/livox_ros_driver2:/root/code/livox_ws/src/livox_ros_driver2 \
+      --rm  dynus:1
+
 ```
 
 4. Inside the container, modify the lidar's ip in the MID360 config file in /root/code/livox_ws/src/livox_ros_driver2/config to be 192.168.1.1xx where xx are the last two digits of the lidar's serial number. 
