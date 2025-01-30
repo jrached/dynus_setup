@@ -1,10 +1,6 @@
 #!/bin/bash 
 
-SHELL:=/bin/bash
-
 build: 
-	bash -c " echo '${VEH_NAME}'"
-	echo "$(VEH_NAME)"
 	docker build --build-arg VEH_NAME=${VEH_NAME} --build-arg MAV_SYS_ID=${MAV_SYS_ID} -t dynus:1 .
 
 dev-build: 
@@ -16,7 +12,14 @@ build-no-cache:
 	docker build --build-arg DUMMY=`date +%s` --build-arg VEH_NAME=${VEH_NAME} --build-arg MAV_SYS_ID=${MAV_SYS_ID} -t dynus:1 .
 
 run-hw: 
-	sudo docker run -it --privileged --network host --volume=${PWD}/gurobi.lic:/opt/gurobi/gurobi.lic:ro --rm  dynus:1 
+	sudo docker run -it \
+	--privileged \
+	--network host \ 
+	-v ${PWD}/gurobi.lic:/opt/gurobi/gurobi.lic:ro \
+	-v code/dynus:/root/code/dynus_ws/src/dynus \
+	-v code/livox_ros_driver2:/root/code/livox_ws/src/livox_ros_driver2 \
+	--rm  dynus:1
+	 
 
 run-sim:
 	docker run  -it \
@@ -40,7 +43,11 @@ run-rr01:
 				--rm dynus:1
 
 
+# old build 
 # docker build --build-arg GIT_ACCESS_TOKEN=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 -t dynus:1 .
+
+# works run 
+# sudo docker run -it --privileged --network host --volume=${PWD}/gurobi.lic:/opt/gurobi/gurobi.lic:ro --rm  dynus:1 
 
 ####TODO: 
 # 1. Modify run command to have 3 volumes: One for the gurobi license, one for the livox_ws and one for dynus_ws 
