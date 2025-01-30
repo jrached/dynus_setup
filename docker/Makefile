@@ -41,3 +41,9 @@ run-rr01:
 
 
 # docker build --build-arg GIT_ACCESS_TOKEN=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 -t dynus:1 .
+
+####TODO: 
+# 1. Modify run command to have 3 volumes: One for the gurobi license, one for the livox_ws and one for dynus_ws 
+# 2. Figure out how to actually get environment variables in make file
+# 3. Add instructions on how to setup nuc prior to docker (including installing docker)
+# 4. Ideally add those code snippets to the github readme so that users can just copy from there.
