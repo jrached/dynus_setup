@@ -133,6 +133,7 @@ mocap_trajgen
 echo >> ~/.bashrc 
 echo '# Alias for dynus docker' >> ~/.bashrc 
 echo 'alias dynus_docker="cd ~/docker/dynus_setup/docker && make run-hw"' >> ~/.bashrc
+source ~/.bashrc
 ```
 
  

@@ -18,6 +18,7 @@ run-hw:
 		-v ~/docker/build_context/gurobi.lic:/opt/gurobi/gurobi.lic:ro \
 		-v ~/docker/build_context/code/dynus:/root/code/dynus_ws/src/dynus \
 		-v ~/docker/build_context/code/livox_ws:/root/code/livox_ws \
+		-v ~/docker/build_context/code/ros2_px4_stack:/root/code/mavros_ws/src/ros2_px4_stack \
 		--rm  dynus:1
 
 run-sim:
