@@ -43,11 +43,7 @@ RUN mkdir code
 
 # Install dependencies
 ##########################################
-RUN apt-get install -y  ros-${ROS_DISTRO}-octomap \
-                        ros-${ROS_DISTRO}-octomap-msgs \
-                        ros-${ROS_DISTRO}-octomap-ros \
-                        ros-${ROS_DISTRO}-octomap-rviz-plugins \
-                        ros-${ROS_DISTRO}-pcl-conversions \
+RUN apt-get install -y  ros-${ROS_DISTRO}-pcl-conversions \
                         ros-${ROS_DISTRO}-example-interfaces \
                         ros-${ROS_DISTRO}-pcl-ros \
                         ros-${ROS_DISTRO}-rqt-gui \
