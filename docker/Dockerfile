@@ -203,6 +203,7 @@ RUN rm install_geographiclib_datasets.sh
 
 ### Make initial pose file 
 COPY get_init_pose.sh /root/code/
+RUN chmod +x /root/code/get_init_pose.sh
 
 ### Install and configure cyclonedds 
 RUN apt install -y ros-humble-rmw-cyclonedds-cpp
