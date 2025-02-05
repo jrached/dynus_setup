@@ -29,7 +29,7 @@ RUN apt-get update
 RUN apt-get upgrade -y
 RUN apt-get install -q -y --no-install-recommends git tmux vim wget tmuxp make ssh openssh-client openssh-server net-tools g++ xterm python3-pip 
 RUN pip install pymavlink 
-# RUN apt install -y libomp-dev libpcl-dev libeigen3-dev #UNCOMMENT
+RUN apt install -y libomp-dev libpcl-dev libeigen3-dev
 
 # Copy ssh key and gurobi license and add github to known ssh hosts 
 #########################################
