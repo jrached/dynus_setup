@@ -62,6 +62,7 @@ git clone git@github.com:jrached/dynus_setup.git &&
 cd ~/docker/dynus_setup && 
 git switch dynus_docker &&
 cp ~/docker/dynus_setup/wls_license/gurobi.lic ~/docker/build_context 
+cp ~/docker/dynus_setup/get_init_pose.sh ~/docker/build_context
 ```
 
 Also clone the dynus, mavros, and livox repos so the volumes don't wipe them in the container. (TODO: Use named volumes to avoid this.)
