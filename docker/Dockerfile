@@ -306,7 +306,7 @@ RUN . /root/code/bridge_ws/install/setup.sh && . /opt/ros/humble/setup.sh && col
 WORKDIR /
 COPY /ws_ros2/src/ros2_px4_stack /root/code/mavros_ws/src/ros2_px4_stack
 #~/docker/build_context/code
-COPY /ws_ros2/src/livox_ros_driver2 /root/code/livox_ws
+COPY /ws_ros2/src/livox_ros_driver2 /root/code/livox_ws/src/livox_ros_driver2
 #~/docker/build_context/code/livox_ws/src
 COPY /repos/dynus_setup/wls_license/gurobi.lic /opt/gurobi/gurobi.lic
 
@@ -328,6 +328,7 @@ RUN mkdir -p /root/code/data/bags
 # ##########################################
 
 # Use the script as the entry point
+COPY repos/dynus_setup/set_lidar_ip.sh /root/code/
 COPY repos/dynus_setup/start.sh /root/code/
 RUN chmod +x /root/code/start.sh
 
