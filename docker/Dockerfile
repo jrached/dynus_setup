@@ -202,11 +202,7 @@ RUN ./install_geographiclib_datasets.sh
 RUN rm install_geographiclib_datasets.sh 
 
 ### Make initial pose file 
-RUN touch /root/code/get_init_pose.sh 
-RUN echo '#!/bin/bash' >> /root/code/get_init_pose.sh 
-RUN echo >> /root/code/get_init_pose.sh 
-RUN echo ' source /root/code/mavros_ws/install/setup.bash ' >> /root/code/get_init_pose.sh 
-RUN echo ' eval $(ros2 run ros2_px4_stack get_init_pose) ' >> /root/code/get_init_pose.sh 
+COPY get_init_pose.sh /root/code/
 RUN chmod +x /root/code/get_init_pose.sh
 
 ### Install and configure cyclonedds 
