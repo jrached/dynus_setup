@@ -1,0 +1,102 @@
+FROM ros:humble
+#FROM osrf/ros:humble-desktop
+
+LABEL Maintainer="Juan Rached <jrached@mit.edu>" \
+      Description="Ubuntu 22.04, ROS2 humble for DYNUS"
+
+
+# Declare arguments
+ARG VEH_NAME
+ARG MAV_SYS_ID 
+
+ENV VEH_NAME=$VEH_NAME
+ENV MAV_SYS_ID=$MAV_SYS_ID
+ENV DUMMYY=0
+
+# Add root user to dialout group 
+RUN usermod -aG dialout root 
+
+# Set environment variables
+##########################################
+ENV ROS_DISTRO=humble
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Usuals
+##########################################
+RUN rm -rf /var/lib/apt/lists/* && \
+    # apt update && apt upgrade -y && \
+    apt-get update && apt-get upgrade -y && \
+    apt-get install -q -y --no-install-recommends \
+        git ssh openssh-client openssh-server curl
+
+# Copy ssh key and gurobi license 
+# and add github to known ssh hosts 
+#########################################
+RUN mkdir -p /root/.ssh && touch /root/.ssh/known_hosts && ssh-keyscan github.com >> /root/.ssh/known_hosts 
+#ADD id_ed25519 /root/.ssh/id_ed25519
+
+
+# Setup GitHub Authentication
+##########################################
+# Install gh for authentication
+RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | tee /usr/share/keyrings/githubcli-archive-keyring.gpg > /dev/null \
+    && chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+    && apt update \
+    && apt install -y gh
+
+#RUN echo "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" | gh auth login --with-token
+
+# Copy the token file into the container
+COPY .auth/token_gh.txt /root/token_gh.txt
+
+# Authenticate GitHub using the token from the file
+RUN cat /root/token_gh.txt | gh auth login --with-token && rm /root/token_gh.txt
+
+# Setup git credentials
+RUN git config --global user.name "hmer101" \
+    && git config --global user.email "hmer101@mit.edu"
+
+
+# SSH
+# Create SSH directory
+RUN mkdir -p /root/.ssh
+
+# Copy SSH private and public key
+COPY .auth/id_ed25519 /root/.ssh/id_ed25519
+COPY .auth/id_ed25519.pub /root/.ssh/id_ed25519.pub
+
+# Set correct permissions
+RUN chmod 600 /root/.ssh/id_ed25519 && \
+    chmod 644 /root/.ssh/id_ed25519.pub && \
+    chmod 700 /root/.ssh
+
+# Add GitHub to known hosts
+RUN ssh-keyscan github.com >> /root/.ssh/known_hosts
+
+
+# Setup Zenoh
+##########################################
+COPY /ws_ros2/src/zenoh_vendor /root/code/zenoh_ws/src/zenoh_vendor
+
+RUN apt update && apt install -y unzip
+RUN cd /root/code/zenoh_ws/ && \
+    . /opt/ros/humble/setup.sh && \
+    colcon build --packages-select zenoh_vendor
+
+# Use the script as the entry point
+COPY repos/dynus_setup/start.sh /root/code/
+RUN chmod +x /root/code/start.sh
+
+# Source and setup the workspace
+RUN echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
+RUN echo "source /root/code/zenoh_ws/install/setup.bash" >> ~/.bashrc
+
+WORKDIR /root 
+CMD ["/root/code/start.sh"]
+#ENTRYPOINT ["/bin/bash", "-c", "echo 'Container Started' && exec bash -l"]
+
+
+
+# From project folder:
+# balena push dynus --dockerfile repos/dynus_setup/docker/Dockerfile --source .
