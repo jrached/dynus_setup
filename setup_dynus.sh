@@ -206,13 +206,14 @@ cp ${PWD}/get_init_pose.sh ~/code/.
 
 # Install and configure cyclonedds
 sudo apt install -y ros-humble-rmw-cyclonedds-cpp
+sudo apt install -y iw # Retrieves WiFi card name
 
 echo >> ~/.bashrc
 echo '# ROS2 RTPS network' >> ~/.bashrc
 echo 'export ROS_DOMAIN_ID=10' >> ~/.bashrc
 echo 'export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp' >> ~/.bashrc
 echo 'export ROS_AUTOMATIC_DISCOVERY_RANGE=SUBNET' >> ~/.bashrc
-echo 'export CYCLONEDDS_URI="<CycloneDDS><Domain><General><NetworkInterfaceAddress>wlo1</NetworkInterfaceAddress></General></Domain></CycloneDDS>"' >> ~/.bashrc
+echo "export CYCLONEDDS_URI=\"<CycloneDDS><Domain><General><NetworkInterfaceAddress>$(iw dev | awk '$1=="Interface"{print $2}')</NetworkInterfaceAddress></General></Domain></CycloneDDS>\"" >> ~/.bashrc
 echo >> ~/.bashrc
 echo '# Path to library for cyclonedds' >> ~/.bashrc
 echo 'export LD_LIBRARY_PATH=/opt/ros/humble/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH' >> ~/.bashrc
