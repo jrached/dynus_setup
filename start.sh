@@ -6,7 +6,9 @@ source /root/code/zenoh_ws/install/setup.bash
 
 # Run setup files
 #chmod +x ./set_lidar_ip.sh
-./set_lidar_ip.sh
+#./set_lidar_ip.sh
+chmod +x /root/code/set_lidar_ip.sh
+/root/code/set_lidar_ip.sh
 cd /root/code/mavros_ws
 colcon build
 

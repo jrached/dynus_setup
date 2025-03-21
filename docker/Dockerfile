@@ -283,9 +283,9 @@ RUN cd /root/code/zenoh_ws/ && \
     colcon build --packages-select zenoh_vendor
 
 RUN echo "export ROS_AUTOMATIC_DISCOVERY_RANGE=LOCALHOST" >> ~/.bashrc
+#RUN echo "export ROS_LOCALHOST_ONLY=1" >> ~/.bashrc
 RUN echo "export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp" >> ~/.bashrc
 RUN echo "export ROS_DOMAIN_ID=10" >> ~/.bashrc
-
 
 
 ### for mavros
@@ -324,6 +324,9 @@ RUN mkdir -p /root/code/data/bags
 # cd ~/docker
 
 
+# install nano 
+RUN sudo apt-get update && sudo apt-get install -y nano
+
 # Set up Entry Point
 # ##########################################
 
@@ -335,6 +338,11 @@ RUN chmod +x /root/code/start.sh
 # Source and setup the workspace
 RUN echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
 RUN echo "source /root/code/zenoh_ws/install/setup.bash" >> ~/.bashrc
+
+
+#RUN echo "export ROS_LOCALHOST_ONLY=1" >> ~/.bashrc # MIGHT NEED TO USE THIS BUT SEEMS TO WORK WITHOUT CURRENTLY - only 1 drone and 1 laptop 
+
+
 
 WORKDIR /root 
 CMD ["/root/code/start.sh"]
