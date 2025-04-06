@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Get lidar IP
+echo 'What are the last two digits of the lidar SN?'
+read LIDAR_SN
+export LIDAR_IP="192.168.1.1${LIDAR_SN}"
+
+# Update lidar IP
 echo "
 {
   \"lidar_summary_info\" : {
@@ -42,4 +48,4 @@ echo "
     }
   ]
 }
-" > /root/code/livox_ws/src/livox_ros_driver2/config/MID360_config.json
+" > ~/code/livox_ws/src/livox_ros_driver2/config/MID360_config.json

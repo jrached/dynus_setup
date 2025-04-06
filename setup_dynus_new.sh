@@ -37,9 +37,10 @@ export SETUP_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 sudo rm -rf /var/lib/apt/lists/*
 sudo apt update && sudo apt upgrade -y
 sudo apt-get update && sudo apt-get upgrade -y
-sudo apt-get install -q -y --no-install-recommends tmux vim wget ssh openssh-client openssh-server curl tmuxp make net-tools g++ xterm python3-pip unzip
+sudo apt-get install -q -y --no-install-recommends tmux vim wget ssh openssh-client openssh-server curl tmuxp make net-tools g++ xterm python3-pip unzip libasio-dev
 sudo apt-get install -y libomp-dev libpcl-dev libeigen3-dev
-pip install pymavlink
+pip install pymavlink # specify that it is a user install
+source "~/.profile"
 
 # Update locales
 sudo apt update && sudo apt upgrade -y
@@ -70,11 +71,11 @@ sudo apt-get install -y  ros-${ROS_DISTRO}-rqt-gui-py
 sudo apt-get install -y  ros-${ROS_DISTRO}-tf2-tools
 sudo apt-get install -y  ros-${ROS_DISTRO}-tf-transformations
 
+sudo apt install ros-${ROS_DISTRO}-mavlink
 sudo apt-get install -y  ros-${ROS_DISTRO}-desktop
 sudo apt-get install -y ros-dev-tools
 sudo apt-get install -y  ros-${ROS_DISTRO}-turtlesim
 sudo apt-get install -y  ros-${ROS_DISTRO}-rqt*
-sudo apt-get install -y  ros-${ROS_DISTRO}-rviz2
 sudo apt-get install -y  ros-${ROS_DISTRO}-rviz-common
 sudo apt-get install -y  libpcl-dev
 sudo apt-get install -y  build-essential
@@ -85,7 +86,15 @@ source /opt/ros/humble/setup.bash" >> ~/.bashrc
 source ~/.bashrc
 
 # Make dirctory for bagfile
-mkdir -p ~/code/data/bags
+mkdir --parents ~/code/data/bags
+
+# Install mavros
+cd ~/
+sudo apt install -y ros-humble-mavros ros-humble-mavros-extras
+wget https://raw.githubusercontent.com/mavlink/mavros/ros2/mavros/scripts/install_geographiclib_datasets.sh
+sudo chmod +x install_geographiclib_datasets.sh
+sudo bash install_geographiclib_datasets.sh # changed to use bash, not source
+rm install_geographiclib_datasets.sh
 
 # Install Gurobi
 ##########################################
@@ -101,12 +110,13 @@ make && cp libgurobi_c++.a ../../lib/
 # Useful variables
 echo '
 # Gurobi
-export GUROBI_HOME="/opt/gurobi1103/linux64"' >> ./bashrc
-export PATH="${PATH}:${GUROBI_HOME}/bin"
+export GUROBI_HOME="/opt/gurobi1103/linux64"' >> ~/.bashrc
+export PATH="${PATH}:${GUROBI_HOME}/bin" # Does this need to be done permanently?
 export LD_LIBRARY_PATH="${GUROBI_HOME}/lib"
+source ~/.bashrc
 
 # Copy over the Gurobi license
-cp ${SETUP_PATH}/wls_license/gurobi.lic /opt/gurobi/gurobi.lic
+cp ${SETUP_PATH}/wls_license/gurobi.lic ${HOME}
 
 # Install DYNUS and dependencies
 ##########################################
@@ -132,7 +142,7 @@ cd ~/code/livox_ws/src
 git clone https://github.com/kotakondo/livox_ros_driver2.git
 
 # Livox-SDK2
-cd ~/code
+cd ~/code # verify
 git clone https://github.com/Livox-SDK/Livox-SDK2.git
 
 # dlio_ws
@@ -165,18 +175,18 @@ git clone https://github.com/jrached/zenoh_vendor.git
 
 # Build the workspace
 ##########################################
-# decomp_ws
+# decomp_ws HAS ERRORS IN CODE
 cd ~/code/decomp_ws
 source /opt/ros/humble/setup.sh && colcon build --packages-select decomp_util
 source ~/code/decomp_ws/install/setup.sh && source /opt/ros/humble/setup.sh && colcon build
 
-# Livox-SDK2
+# Livox-SDK2 HAS ERRORS IN CODE
 cd ~/code/Livox-SDK2
 mkdir build
 cd ~/code/Livox-SDK2/build
 cmake .. && make -j && sudo make install
 
-# livox_ros_drver2
+# livox_ros_drver2 HAS ERRORS IN CODE
 cd ~/code/livox_ws/src/livox_ros_driver2
 source /opt/ros/humble/setup.sh && ./build.sh humble
 
@@ -184,7 +194,7 @@ source /opt/ros/humble/setup.sh && ./build.sh humble
 cd ~/code/dlio_ws
 source /opt/ros/humble/setup.bash && colcon build
 
-# trajgen_ws
+# trajgen_ws HAS ERRORS IN CODE
 cd ~/code/trajgen_ws
 source /opt/ros/humble/setup.bash && colcon build --packages-select snapstack_msgs2
 source install/setup.bash && colcon build
@@ -198,12 +208,12 @@ cd ~/code/dynus_ws
 source /opt/ros/humble/setup.sh
 source ~/code/decomp_ws/install/setup.sh
 export CMAKE_PREFIX_PATH=~/code/livox_ws/install/livox_ros_driver2:~/code/decomp_ws/install/decomp_util
-colcon build
+colcon build # gives a risks message
 
 # bridge_ws
 cd ~/code/bridge_ws
 source /opt/ros/humble/setup.sh && colcon build
-source /root/code/bridge_ws/install/setup.sh
+source ~/code/bridge_ws/install/setup.sh
 source /opt/ros/humble/setup.sh && colcon build
 
 # zenoh_ws
@@ -213,11 +223,11 @@ source /opt/ros/humble/setup.sh && colcon build
 # Gazebo
 ##########################################
 # Handle ALSA-related error
-echo "
+echo '
 pcm.!default {
     type plug
     slave.pcm "null"
-}" >>/usr/share/alsa/alsa.conf
+}' | sudo tee -a /usr/share/alsa/alsa.conf
 
 # Paths for Livox Lidar
 export LD_LIBRARY_PATH=/root/code/livox_ws/install/livox_ros_driver2/lib:${LD_LIBRARY_PATH}
@@ -243,14 +253,6 @@ alias dynus="python3 ~/code/mavros_ws/src/ros2_px4_stack/scripts/livox_dynus_tmu
 alias mocap_trajgen="python3 ~/code/mavros_ws/src/ros2_px4_stack/scripts/mocap_trajgen_tmux.py"' >> ~/.bashrc
 source ~/.bashrc
 
-# Install mavros
-cd ~/
-sudo apt install -y ros-humble-mavros ros-humble-mavros-extras
-wget https://raw.githubusercontent.com/mavlink/mavros/ros2/mavros/scripts/install_geographiclib_datasets.sh
-sudo chmod +x install_geographiclib_datasets.sh
-sudo source install_geographiclib_datasets.sh
-rm install_geographiclib_datasets.sh
-
 # Make initial pose file
 ##########################################
 cp ${SETUP_PATH}/get_init_pose.sh ~/code/
@@ -271,7 +273,7 @@ source ~/.bashrc
 ##########################################
 echo '
 # Zenoh
-source /root/code/zenoh_ws/install/setup.bash'>> ~/.bashrc
+source ~/code/zenoh_ws/install/setup.bash'>> ~/.bashrc
 
 echo '
 # ROS2 RTPS network
@@ -291,7 +293,7 @@ clear -x
 source ${SETUP_PATH}/set_lidar_ip.sh
 
 clear -x
-echo 'Dynus setup completed. Make sure to change the wired connection IP for the LiDAR in system settings.'
+echo 'Dynus setup completed.'
 
 # ADD THE FOLLOWING TO BASH:
 ##########################################
