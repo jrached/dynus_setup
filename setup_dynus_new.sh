@@ -249,7 +249,9 @@ alias cbsl="roscd && colcon build --symlink-install && sb"
 alias cbps="roscd && colcon build --packages-select"
 alias tf_visualize="ros2 run rqt_tf_tree rqt_tf_tree"
 alias dynus="python3 ~/code/mavros_ws/src/ros2_px4_stack/scripts/livox_dynus_tmux.py"
-alias mocap_trajgen="python3 ~/code/mavros_ws/src/ros2_px4_stack/scripts/mocap_trajgen_tmux.py"' >> ~/.bashrc
+alias mocap_trajgen="python3 ~/code/mavros_ws/src/ros2_px4_stack/scripts/mocap_trajgen_tmux.py"
+alias zenoh_router="source ~/dynus_code/zenoh_ws/install/setup.bash && ros2 run zenoh_vendor zenoh-bridge-ros2dds -c ~/dynus_code/zenoh_ws/src/zenoh_vendor/configs/zenoh_agent.json5"
+' >> ~/.bashrc
 source ~/.bashrc
 
 # Make initial pose file
