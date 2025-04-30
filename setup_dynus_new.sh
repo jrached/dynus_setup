@@ -107,12 +107,11 @@ sudo mv gurobi1103/ /opt
 cd /opt/gurobi1103/linux64/src/build
 make && cp libgurobi_c++.a ../../lib/
 
-# Useful variables
-echo '
-# Gurobi
-export GUROBI_HOME="/opt/gurobi1103/linux64"' >> ~/.bashrc
-export PATH="${PATH}:${GUROBI_HOME}/bin" # Does this need to be done permanently?
-export LD_LIBRARY_PATH="${GUROBI_HOME}/lib"
+echo >> ~/.bashrc
+echo "# Gurobi" >> ~/.bashrc
+echo 'export GUROBI_HOME="/opt/gurobi1103/linux64" ' >> ~/.bashrc
+echo 'export PATH="${PATH}:${GUROBI_HOME}/bin" ' >> ~/.bashrc
+echo 'export LD_LIBRARY_PATH="${GUROBI_HOME}/lib" ' >> ~/.bashrc
 source ~/.bashrc
 
 # Copy over the Gurobi license
