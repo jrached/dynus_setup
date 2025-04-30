@@ -123,7 +123,7 @@ cp ${SETUP_PATH}/wls_license/gurobi.lic ${HOME}
 # dynus_ws
 mkdir -p ~/code/dynus_ws/src
 cd ~/code/dynus_ws/src
-git clone --branch hw https://github.com/kotakondo/dynus.git
+git clone git@github.com:kotakondo/dynus.git
 git clone https://github.com/kotakondo/dynus_interfaces.git
 git clone https://github.com/kotakondo/octomap_mapping.git
 git clone https://github.com/kotakondo/realsense_gazebo_plugin.git
@@ -153,7 +153,7 @@ git clone https://github.com/jrached/direct_lidar_inertial_odometry.git
 # ros2_px4_stack
 mkdir -p ~/code/mavros_ws/src
 cd ~/code/mavros_ws/src
-git clone --branch multiagent https://github.com/jrached/ros2_px4_stack.git
+git clone https://github.com/jrached/ros2_px4_stack.git
 
 # trajgen_ws
 mkdir -p ~/code/trajgen_ws/src
