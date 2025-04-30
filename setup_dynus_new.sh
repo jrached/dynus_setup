@@ -296,6 +296,7 @@ source ~/.bashrc
 
 clear -x
 echo 'Dynus setup completed.'
+echo 'Reboot for dialout priviledges to take effect'
 
 # ADD THE FOLLOWING TO BASH:
 ##########################################
