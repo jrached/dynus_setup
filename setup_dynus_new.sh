@@ -291,6 +291,8 @@ source ~/.bashrc
 chmod -x ${SETUP_PATH}/set_lidar_ip.sh
 clear -x
 source ${SETUP_PATH}/set_lidar_ip.sh
+source /opt/ros/humble/setup.sh && cd ~/code/livox_ws/ && colcon build && source install/setup.bash && cd 
+source ~/.bashrc
 
 clear -x
 echo 'Dynus setup completed.'
