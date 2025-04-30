@@ -229,9 +229,10 @@ pcm.!default {
 }' | sudo tee -a /usr/share/alsa/alsa.conf
 
 # Paths for Livox Lidar
-export LD_LIBRARY_PATH=/root/code/livox_ws/install/livox_ros_driver2/lib:${LD_LIBRARY_PATH}
-export LD_LIBRARY_PATH=/opt/ros/humble/lib:${LD_LIBRARY_PATH}
-export LD_LIBRARY_PATH=/root/code/decomp_ws/install/decomp_ros_msgs/lib:${LD_LIBRARY_PATH}
+echo >> ~/.bashrc
+echo 'export LD_LIBRARY_PATH="/home/${USER}/code/livox_ws/install/livox_ros_driver2/lib:${LD_LIBRARY_PATH}" ' >> ~/.bashrc
+echo 'export LD_LIBRARY_PATH="/opt/ros/humble/lib:${LD_LIBRARY_PATH}" ' >> ~/.bashrc
+echo 'export LD_LIBRARY_PATH="/home/${USER}/code/decomp_ws/install/decomp_ros_msgs/lib:${LD_LIBRARY_PATH}" ' >> ~/.bashrc
 
 # Relevant aliases
 echo '
