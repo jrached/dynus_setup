@@ -170,7 +170,7 @@ git clone https://github.com/jrached/mavros.git
 # zenoh_ws
 mkdir -p ~/code/zenoh_ws/src
 cd ~/code/zenoh_ws/src
-git clone https://github.com/jrached/zenoh_vendor.git
+git clone git@github.com:jrached/zenoh_vendor.git
 
 # Build the workspace
 ##########################################
