@@ -1,3 +1,11 @@
+#!/bin/bash
+
+# Get lidar IP
+echo 'What are the last two digits of the lidar SN?'
+read LIDAR_SN
+export LIDAR_IP="192.168.1.1${LIDAR_SN}"
+
+# Update lidar IP
 echo "
 {
   \"lidar_summary_info\" : {
@@ -12,13 +20,13 @@ echo "
       \"log_data_port\": 56500
     },
     \"host_net_info\" : {
-      \"cmd_data_ip\" : \"192.168.1.5\",
+      \"cmd_data_ip\" : \"192.168.1.50\",
       \"cmd_data_port\": 56101,
-      \"push_msg_ip\": \"192.168.1.5\",
+      \"push_msg_ip\": \"192.168.1.50\",
       \"push_msg_port\": 56201,
-      \"point_data_ip\": \"192.168.1.5\",
+      \"point_data_ip\": \"192.168.1.50\",
       \"point_data_port\": 56301,
-      \"imu_data_ip\" : \"192.168.1.5\",
+      \"imu_data_ip\" : \"192.168.1.50\",
       \"imu_data_port\": 56401,
       \"log_data_ip\" : \"\",
       \"log_data_port\": 56501
@@ -40,4 +48,4 @@ echo "
     }
   ]
 }
-" > /root/code/livox_ws/src/livox_ros_driver2/config/MID360_config.json
+" > ~/code/livox_ws/src/livox_ros_driver2/config/MID360_config.json
