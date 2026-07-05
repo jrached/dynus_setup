@@ -1,8 +1,9 @@
-# dynus_setup
+# pixstack_setup
 
-1. Clone this repo.
-2. Generate key with gen_ssh_key.sh file and add it to your github account
-3. Source setup_dynus.sh script 
-4. Get a gurobi license  
-5. Set wired connection ip address to 192.168.1.50 on ubuntu gui (required for lidar)
-6. Reboot for dialout privileges to take effect
+ACL installation files for the 2024 PX4 quadcopter fleet software. 
+
+The pixstack consists of integration code for the autonomy stack as well as scripts to facilitate test flights and data collection.
+
+The install.sh script installs the pixstack, the autonomy software, and all dependencies. 
+
+To setup a new quadcopter follow this guide: https://docs.google.com/document/d/1l8QtowLM2WaQr2ADHyFJCM6RihY4-RuVmX10wdNYHUg/edit?usp=sharing 
