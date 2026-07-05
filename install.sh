@@ -159,6 +159,13 @@ git clone git@github.com:jrached/ros2_px4_stack.git
 cd ros2_px4_stack
 git switch dynus
 
+# acl mapping 
+mkdir -p ~/code/mapping_ws/src 
+cd ~/code/mapping_ws/src 
+git clone git@gitlab.com:mit-acl/lab/acl-mapping.git
+git clone https://github.com/kotakondo/dynus_interfaces.git
+cd acl-mapping && git switch dynamic_segmentation 
+
 # trajgen_ws
 mkdir -p ~/code/trajgen_ws/src
 cd ~/code/trajgen_ws/src
@@ -215,7 +222,19 @@ cd ~/code/dynus_ws
 source /opt/ros/humble/setup.sh
 source ~/code/decomp_ws/install/setup.sh
 export CMAKE_PREFIX_PATH=~/code/livox_ws/install/livox_ros_driver2:~/code/decomp_ws/install/decomp_util
-colcon build # gives a risks message
+colcon build 
+
+# acl mapping 
+cd ~/code/mapping_ws
+colcon build \
+  --cmake-args \
+    -DCMAKE_C_COMPILER=/usr/bin/gcc \
+    -DCMAKE_CXX_COMPILER=/usr/bin/g++ \
+    -DCMAKE_INSTALL_PREFIX=$PWD/install \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_CXX_FLAGS_RELEASE="-O3" \
+    -DEIGEN_DONT_VECTORIZE=OFF \
+  --merge-install
 
 # bridge_ws
 cd ~/code/bridge_ws
