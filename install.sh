@@ -29,6 +29,9 @@ export DEBIAN_FRONTEND=noninteractive
 # Add root user to dialout group
 sudo usermod -aG dialout $USER
 
+# Create data folder 
+mkdir ~/data 
+
 # Save current path and make executables
 export SETUP_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -71,7 +74,7 @@ sudo apt-get install -y  ros-${ROS_DISTRO}-rqt-gui-py
 sudo apt-get install -y  ros-${ROS_DISTRO}-tf2-tools
 sudo apt-get install -y  ros-${ROS_DISTRO}-tf-transformations
 
-sudo apt install ros-${ROS_DISTRO}-mavlink
+# sudo apt install ros-${ROS_DISTRO}-mavlink
 sudo apt-get install -y  ros-${ROS_DISTRO}-desktop
 sudo apt-get install -y ros-dev-tools
 sudo apt-get install -y  ros-${ROS_DISTRO}-turtlesim
@@ -153,6 +156,8 @@ git clone https://github.com/jrached/direct_lidar_inertial_odometry.git
 mkdir -p ~/code/mavros_ws/src
 cd ~/code/mavros_ws/src
 git clone https://github.com/jrached/ros2_px4_stack.git
+cd ros2_px4_stack
+git switch dynus
 
 # trajgen_ws
 mkdir -p ~/code/trajgen_ws/src
@@ -166,6 +171,9 @@ git clone https://github.com/jrached/snapstack_msgs2.git
 mkdir -p ~/code/bridge_ws/src
 cd ~/code/bridge_ws/src
 git clone https://github.com/jrached/mavros.git
+git clone https://github.com/mavlink/mavlink-gbp-release.git -b upstream
+cd mavlink-gbp-release
+git checkout $(git rev-list -n 1 --before="2025-05-31" HEAD)
 
 # zenoh_ws
 mkdir -p ~/code/zenoh_ws/src
