@@ -29,6 +29,9 @@ export DEBIAN_FRONTEND=noninteractive
 # Add root user to dialout group
 sudo usermod -aG dialout $USER
 
+# Create data folder 
+mkdir ~/data 
+
 # Save current path and make executables
 export SETUP_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -170,7 +173,7 @@ cd ~/code/bridge_ws/src
 git clone https://github.com/jrached/mavros.git
 git clone https://github.com/mavlink/mavlink-gbp-release.git -b upstream
 cd mavlink-gbp-release
-git checkout $(git rev-list -n 1 --before="2025-12-31" HEAD)
+git checkout $(git rev-list -n 1 --before="2025-05-31" HEAD)
 
 # zenoh_ws
 mkdir -p ~/code/zenoh_ws/src
