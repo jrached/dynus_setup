@@ -155,7 +155,7 @@ git clone https://github.com/jrached/direct_lidar_inertial_odometry.git
 # ros2_px4_stack
 mkdir -p ~/code/mavros_ws/src
 cd ~/code/mavros_ws/src
-git clone https://github.com/jrached/ros2_px4_stack.git
+git clone git@github.com:jrached/ros2_px4_stack.git
 cd ros2_px4_stack
 git switch dynus
 
